@@ -108,7 +108,7 @@ flutter run
 - `RELEASE_KEYSTORE_BASE64` 是把你的 `keystore` 文件做 Base64 编码后的内容
 - 其余三个就是 Android 签名常规参数
 
-如果这些 Secrets 没配，当前项目的 Gradle 逻辑会退回到 debug keystore 继续完成 release 构建。这样做的好处是工作流不会因为没有正式签名就完全跑不起来，但这种 release APK 适合做验证构建，不适合正式分发。
+如果这些 Secrets 没配完整，工作流会跳过正式签名注入，当前项目的 Gradle 逻辑会退回到 debug keystore 继续完成 release 构建。这样做的好处是工作流不会因为没有正式签名就完全跑不起来，但这种 release APK 适合做验证构建，不适合正式分发。
 
 ## 关键文档
 

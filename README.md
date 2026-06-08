@@ -2,6 +2,20 @@
 
 Android Flutter version of the original iOS SwiftUI `AIChatHelper`.
 
+## 中文导读
+
+AI Reply 是一个面向 Android 的 Flutter 智能回复助手，主打“截图即生成回复”“复制文字即生成回复”和“聊天场景下的快捷回复”。它把截图回复、文本润色、人物画像、聊天模拟训练、历史记录和个性化风格整合在一个应用里，适合需要高频处理聊天内容、社交回复和表达优化的场景。
+
+核心亮点：
+
+- 截图、粘贴文字、系统分享文本/图片都可以直接进入生成流程
+- 支持悬浮球、快捷回复、分享意图、深链等 Android 原生入口
+- 可管理人物资料、历史记录、个性化风格、隐私和界面设置
+- 兼容 OpenAI 风格接口，支持模型拉取、能力标记和失败回退
+- 集成朋友圈/人物分析与对话模拟训练，不只是单次回复生成
+
+如果你更习惯中文文档，可以直接看 [README.zh-CN.md](README.zh-CN.md)。
+
 ## Overview
 
 AI Reply is an Android-first Flutter app for generating chat replies from screenshots or pasted text, managing people profiles and history, and configuring OpenAI-compatible model endpoints. The repository contains both the Flutter application and the Android native bridge layer used for screenshot capture, floating tools, deep links, and share-intent handling.

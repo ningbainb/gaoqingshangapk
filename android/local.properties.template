@@ -1,0 +1,13 @@
+sdk.dir=C:/Users/<YourUser>/AppData/Local/Android/Sdk
+flutter.sdk=C:/src/flutter
+flutter.buildMode=debug
+flutter.versionName=1.0.0
+flutter.versionCode=1
+
+# Optional release signing values for distributable builds only.
+# Keep real values on the target machine or in CI secrets.
+# RELEASE_STORE_FILE=C:/path/to/release.keystore
+# RELEASE_STORE_PASSWORD=
+# RELEASE_KEY_ALIAS=
+# RELEASE_KEY_PASSWORD=
+# ENFORCE_RELEASE_SIGNING=true

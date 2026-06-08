@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutDisabledMessage="@string/shortcut_quick_image_disabled"
+        android:shortcutId="quick_image_reply"
+        android:shortcutLongLabel="@string/shortcut_quick_image_long_label"
+        android:shortcutShortLabel="@string/shortcut_quick_image_short_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="aichathelper://quick-image"
+            android:targetClass="com.local.aichathelper.MainActivity"
+            android:targetPackage="com.local.aichathelper" />
+    </shortcut>
+</shortcuts>

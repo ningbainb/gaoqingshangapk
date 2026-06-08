@@ -1,0 +1,92 @@
+plugins {
+    id "com.android.application"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { localProperties.load(it) }
+}
+
+def flutterVersionCode = (project.findProperty("flutter.versionCode")
+        ?: localProperties.getProperty("flutter.versionCode")
+        ?: "1").toString()
+def flutterVersionName = (project.findProperty("flutter.versionName")
+        ?: localProperties.getProperty("flutter.versionName")
+        ?: "1.0").toString()
+def releaseStoreFilePath = (project.findProperty("RELEASE_STORE_FILE")
+        ?: "${System.properties['user.home']}/.android/debug.keystore").toString()
+def releaseStorePassword = (project.findProperty("RELEASE_STORE_PASSWORD")
+        ?: "android").toString()
+def releaseKeyAlias = (project.findProperty("RELEASE_KEY_ALIAS")
+        ?: "androiddebugkey").toString()
+def releaseKeyPassword = (project.findProperty("RELEASE_KEY_PASSWORD")
+        ?: "android").toString()
+def enforceReleaseSigning = (project.findProperty("ENFORCE_RELEASE_SIGNING")
+        ?: "false").toString().toBoolean()
+def hasReleaseSigningCredentials = project.hasProperty("RELEASE_STORE_FILE") &&
+        project.hasProperty("RELEASE_STORE_PASSWORD") &&
+        project.hasProperty("RELEASE_KEY_ALIAS") &&
+        project.hasProperty("RELEASE_KEY_PASSWORD")
+
+gradle.taskGraph.whenReady { taskGraph ->
+    def requestedReleaseDistribution = taskGraph.allTasks.any { task ->
+        task.project.path == ":app" && ["assembleRelease", "bundleRelease"].contains(task.name)
+    }
+    if (requestedReleaseDistribution && !hasReleaseSigningCredentials) {
+        def message = "Release build is using the Android debug keystore. " +
+                "Set RELEASE_STORE_FILE, RELEASE_STORE_PASSWORD, RELEASE_KEY_ALIAS, " +
+                "and RELEASE_KEY_PASSWORD for distributable APKs or app bundles."
+        if (enforceReleaseSigning) {
+            throw new GradleException(message)
+        }
+        logger.lifecycle("WARNING: ${message}")
+    }
+}
+
+android {
+    namespace = "com.local.aichathelper"
+    compileSdk = 36
+    ndkVersion = "28.2.13676358"
+
+    signingConfigs {
+        release {
+            storeFile = file(releaseStoreFilePath)
+            storePassword = releaseStorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
+        }
+    }
+
+    defaultConfig {
+        applicationId = "com.local.aichathelper"
+        minSdk = 30
+        targetSdk = 36
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:1.13.1"
+}
+
+flutter {
+    source = "../.."
+}

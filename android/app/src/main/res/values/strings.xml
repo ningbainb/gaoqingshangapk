@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AI Reply</string>
+    <string name="accessibility_service_description">点击 AI Reply 悬浮窗后截取当前屏幕，用于生成聊天回复。</string>
+    <string name="shortcut_quick_image_short_label">处理截图</string>
+    <string name="shortcut_quick_image_long_label">从截图生成回复</string>
+    <string name="shortcut_quick_image_disabled">截图快捷入口暂不可用</string>
+</resources>

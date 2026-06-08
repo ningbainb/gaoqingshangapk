@@ -1,0 +1,24 @@
+abstract final class AppRoutes {
+  static const home = '/';
+  static const image = '/image';
+  static const screenshot = '/screenshot';
+  static const quick = '/quick';
+  static const quickImage = '/quick-image';
+  static const text = '/text';
+  static const result = '/result';
+  static const history = '/history';
+  static const historyDetail = '/history/detail';
+  static const people = '/people';
+  static const personLibrary = '/person-library';
+  static const peopleDetail = '/people/detail';
+  static const peopleEdit = '/people/edit';
+  static const peopleSelectSimulation = '/people/select-simulation';
+  static const simulation = '/simulation';
+  static const moments = '/moments';
+  static const settings = '/settings';
+  static const floatingGuide = '/floating-guide';
+  static const api = '/api';
+  static const apiSettings = '/api-settings';
+  static const personalization = '/personalization';
+  static const privacy = '/privacy';
+}

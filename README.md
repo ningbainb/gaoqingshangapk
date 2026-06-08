@@ -2,7 +2,66 @@
 
 Android Flutter version of the original iOS SwiftUI `AIChatHelper`.
 
-## Migrated Features
+## Overview
+
+AI Reply is an Android-first Flutter app for generating chat replies from screenshots or pasted text, managing people profiles and history, and configuring OpenAI-compatible model endpoints. The repository contains both the Flutter application and the Android native bridge layer used for screenshot capture, floating tools, deep links, and share-intent handling.
+
+## Highlights
+
+- Generate reply suggestions from screenshots, pasted text, shared text, and shared images.
+- Support floating capture and quick-reply flows on Android.
+- Manage people profiles, history records, personalization, privacy, and appearance settings.
+- Connect to OpenAI-compatible APIs with model fetching, capability tagging, and fallback handling.
+- Run Moments/profile analysis and conversation simulation features inside the same app.
+
+## Quick Start
+
+Requirements:
+
+- Flutter stable
+- Android Studio or Android command-line SDK
+- Android SDK Platform 36+
+
+Run:
+
+```bash
+flutter pub get
+flutter run
+```
+
+If Gradle reports `flutter.sdk not set in local.properties`, copy `android/local.properties.example` to `android/local.properties` and fill in your local Flutter and Android SDK paths.
+
+## Project Structure
+
+```text
+gaoqingshangapk/
+|- lib/                  Flutter app source
+|- android/              Android host project and native bridge code
+|- assets/               Images and icons
+|- test/                 Dart and Flutter tests
+|- docs/                 Migration notes and audit docs
+|- scripts/              Helper scripts
+|- pubspec.yaml          Flutter dependencies
+|- README.md             Main project overview
+|- README-WINDOWS.md     Windows setup and handoff guide
+```
+
+## Key Documents
+
+- [README-WINDOWS.md](README-WINDOWS.md): Windows setup and handoff guide
+- [PROJECT_MANIFEST.md](PROJECT_MANIFEST.md): project file and module manifest
+- [docs/MIGRATION_AUDIT.md](docs/MIGRATION_AUDIT.md): migrated-feature checklist and device test matrix
+
+## Android Permissions
+
+The floating screenshot feature uses two user-enabled paths:
+
+- MediaProjection from inside the app
+- AccessibilityService for the floating one-tap screenshot mode
+
+The app does not silently read other apps, does not auto-send messages, and does not save original screenshots to history. If the optional two-step vision flow is enabled, screenshot text is extracted through your configured vision-model API only for the current generation flow.
+
+## Detailed Migration Coverage
 
 - Home entries for screenshot reply, pasted text reply, quick reply, history, people library, API settings, personalization, and privacy.
 - Screenshot reply from gallery, clipboard image, Android share image, or floating capture, with quick/floating replies returning to detected chat apps after copy when Android can resolve the target package.
@@ -77,30 +136,6 @@ Android Flutter version of the original iOS SwiftUI `AIChatHelper`.
 - iOS Share Extension equivalent is covered by Android image/text share intents.
 - Android selected-text `PROCESS_TEXT` covers chat text handoff, so selected chat text can still be sent into the text-reply flow without shipping a custom system input method.
 - Screenshots are captured only after user action and Android permission/service setup.
-
-## Requirements
-
-- Flutter stable
-- Android Studio or Android command-line SDK
-- Android SDK Platform 36+
-
-Run:
-
-```bash
-flutter pub get
-flutter run
-```
-
-If Gradle reports `flutter.sdk not set in local.properties`, copy `android/local.properties.example` to `android/local.properties` and fill in your local Flutter and Android SDK paths.
-
-## Android Permissions
-
-The floating screenshot feature uses two user-enabled paths:
-
-- MediaProjection from inside the app.
-- AccessibilityService for the floating one-tap screenshot mode.
-
-The app does not silently read other apps, does not auto-send messages, and does not save original screenshots to history. The app does not run local OCR; if optional two-step vision is enabled, screenshot text is extracted by your configured vision-model API only for the current generation and is not long-term cached.
 
 ## Migration Audit
 

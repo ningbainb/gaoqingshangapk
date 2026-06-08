@@ -75,7 +75,7 @@ The floating screenshot feature uses two user-enabled paths:
 - MediaProjection from inside the app
 - AccessibilityService for the floating one-tap screenshot mode
 
-The app does not silently read other apps, does not auto-send messages, and does not save original screenshots to history. If the optional two-step vision flow is enabled, screenshot text is extracted through your configured vision-model API only for the current generation flow.
+The app does not silently read other apps, does not auto-send messages, and does not save original screenshots to history. The app does not run local OCR. If the optional two-step vision flow is enabled, screenshot text is extracted through your configured vision-model API only for the current generation flow and is not long-term cached.
 
 ## Detailed Migration Coverage
 

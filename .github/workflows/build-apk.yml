@@ -1,0 +1,86 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  JAVA_VERSION: "21"
+  FLUTTER_CHANNEL: stable
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          cache: true
+          pub-cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze project
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Prepare release signing
+        if: ${{ secrets.RELEASE_KEYSTORE_BASE64 != '' && secrets.RELEASE_STORE_PASSWORD != '' && secrets.RELEASE_KEY_ALIAS != '' && secrets.RELEASE_KEY_PASSWORD != '' }}
+        shell: bash
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+        run: |
+          echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.keystore"
+          {
+            echo "RELEASE_STORE_FILE=$RUNNER_TEMP/release.keystore"
+            echo "RELEASE_STORE_PASSWORD=$RELEASE_STORE_PASSWORD"
+            echo "RELEASE_KEY_ALIAS=$RELEASE_KEY_ALIAS"
+            echo "RELEASE_KEY_PASSWORD=$RELEASE_KEY_PASSWORD"
+            echo "ENFORCE_RELEASE_SIGNING=true"
+          } >> "$GITHUB_ENV"
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Upload debug APK artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: app-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload release APK artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14

@@ -71,12 +71,52 @@ flutter run
 
 如果 Gradle 提示 `flutter.sdk not set in local.properties`，把 `android/local.properties.example` 复制为 `android/local.properties`，再填入你本机的 Flutter 和 Android SDK 路径。
 
+## GitHub Actions APK 构建
+
+仓库里已经加入 GitHub Actions 工作流：
+
+- 工作流文件：`.github/workflows/build-apk.yml`
+- 触发方式：
+  - push 到 `main`
+  - Pull Request
+  - GitHub 网页手动触发 `workflow_dispatch`
+
+这个工作流会自动执行：
+
+- `flutter pub get`
+- `flutter analyze`
+- `flutter test`
+- `flutter build apk --debug`
+- `flutter build apk --release`
+
+构建完成后，会在 Actions 的构建产物里上传：
+
+- `app-debug-apk`
+- `app-release-apk`
+
+### 发布签名配置
+
+如果你在 GitHub 仓库的 Secrets 中配置了下面这些值，工作流会优先用正式签名来构建 release APK：
+
+- `RELEASE_KEYSTORE_BASE64`
+- `RELEASE_STORE_PASSWORD`
+- `RELEASE_KEY_ALIAS`
+- `RELEASE_KEY_PASSWORD`
+
+其中：
+
+- `RELEASE_KEYSTORE_BASE64` 是把你的 `keystore` 文件做 Base64 编码后的内容
+- 其余三个就是 Android 签名常规参数
+
+如果这些 Secrets 没配，当前项目的 Gradle 逻辑会退回到 debug keystore 继续完成 release 构建。这样做的好处是工作流不会因为没有正式签名就完全跑不起来，但这种 release APK 适合做验证构建，不适合正式分发。
+
 ## 关键文档
 
 - [README.md](README.md)：主项目说明与英文技术概览
 - [README-WINDOWS.md](README-WINDOWS.md)：Windows 环境接手说明
 - [PROJECT_MANIFEST.md](PROJECT_MANIFEST.md)：项目文件与模块清单
 - [docs/MIGRATION_AUDIT.md](docs/MIGRATION_AUDIT.md)：迁移清单与设备侧验证矩阵
+- `.github/workflows/build-apk.yml`：GitHub Actions APK 自动构建工作流
 
 ## 隐私与权限说明
 

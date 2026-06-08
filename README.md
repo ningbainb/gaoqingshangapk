@@ -63,8 +63,10 @@ gaoqingshangapk/
 ## Key Documents
 
 - [README-WINDOWS.md](README-WINDOWS.md): Windows setup and handoff guide
+- [README.zh-CN.md](README.zh-CN.md): Chinese overview and usage guide
 - [PROJECT_MANIFEST.md](PROJECT_MANIFEST.md): project file and module manifest
 - [docs/MIGRATION_AUDIT.md](docs/MIGRATION_AUDIT.md): migrated-feature checklist and device test matrix
+- `.github/workflows/build-apk.yml`: GitHub Actions APK build workflow
 
 ## Android Permissions
 
